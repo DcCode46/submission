@@ -46,7 +46,7 @@ plot_rentals_by_season(filtered_df)
 # Fungsi untuk plot pengaruh cuaca terhadap penyewaan sepeda
 def plot_weather_effect(df):
     fig, ax = plt.subplots(figsize=(8, 5))
-    sns.boxplot(x='weathersit', y='cnt', data=df, palette='Set2', ax=ax)
+    sns.barplot(x='weathersit', y='cnt', data=df, palette='Set2', ax=ax)
     ax.set_xlabel('Kondisi Cuaca')
     ax.set_ylabel('Jumlah Penyewaan')
     ax.set_title('Pengaruh Kondisi Cuaca terhadap Penyewaan Sepeda')
