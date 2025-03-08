@@ -8,13 +8,12 @@ import seaborn as sns
 sns.set(style='dark')
 
 # Memuat dataset
-day_df = pd.read_csv('https://raw.githubusercontent.com/DcCode46/dicoding/refs/heads/main/day.csv')
-hour_df = pd.read_csv('https://raw.githubusercontent.com/DcCode46/dicoding/refs/heads/main/hour.csv')
+all_data_df = pd.read_csv('https://raw.githubusercontent.com/DcCode46/submission/refs/heads/main/dashboard/all_data.csv')
 
 # Konversi tanggal
-day_df['dteday'] = pd.to_datetime(day_df['dteday'])
-min_date = day_df['dteday'].min()
-max_date = day_df['dteday'].max()
+all_data_df['dteday'] = pd.to_datetime(all_data_df['dteday'])
+min_date = all_data_df['dteday'].min()
+max_date = all_data_df['dteday'].max()
 
 # Sidebar untuk rentang waktu filter
 with st.sidebar:
@@ -24,17 +23,17 @@ with st.sidebar:
     )
 
 # Filter data berdasarkan rentang waktu
-filtered_df = day_df[(day_df['dteday'] >= str(start_date)) & (day_df['dteday'] <= str(end_date))]
+filtered_df = all_data_df[(all_data_df['dteday'] >= str(start_date)) & (all_data_df['dteday'] <= str(end_date))]
 
 # Mapping nama musim dan cuaca
-season_mapping = {1: "Spring", 2: "Summer", 3: "Fall", 4: "Winter"}
-weather_mapping = {1: "Clear", 2: "Cloudy", 3: "Rainy", 4: "Bad Weather"}
+season_mapping = {1: "Musim Semi", 2: "Musim Panas", 3: "Musim Gugur", 4: "Musim Dingin"}
+weather_mapping = {1: "Cerah", 2: "Mendung", 3: "Hujan"}
 filtered_df['season'] = filtered_df['season'].map(season_mapping)
 filtered_df['weathersit'] = filtered_df['weathersit'].map(weather_mapping)
 
 # Informasi dataset
-st.header('📊 Bike Rental Analysis 🚴‍♂️')
-st.subheader('Informasi Dataset')
+st.header('📊 Analisis Rental Sepeda 🚴‍♂️')
+st.subheader('Informasi Gabungan Dataset day dan hour.csv')
 st.write(filtered_df.describe())
 
 # Fungsi untuk plot penyewaan berdasarkan musim
@@ -60,33 +59,6 @@ def plot_weather_effect(df):
 
 st.subheader('Pengaruh Cuaca terhadap Penyewaan Sepeda')
 plot_weather_effect(filtered_df)
-
-# Penyewaan berdasarkan hari dalam seminggu
-def plot_rentals_by_weekday(df):
-    weekday_mapping = {0: "Sunday", 1: "Monday", 2: "Tuesday", 3: "Wednesday",
-                       4: "Thursday", 5: "Friday", 6: "Saturday"}
-    df['weekday'] = df['weekday'].map(weekday_mapping)
-    fig, ax = plt.subplots(figsize=(8, 5))
-    sns.barplot(x='weekday', y='cnt', data=df, estimator=np.mean, palette='viridis', ax=ax)
-    ax.set_xlabel('Hari dalam Seminggu')
-    ax.set_ylabel('Rata-rata Penyewaan')
-    ax.set_title('Rata-rata Penyewaan Sepeda Berdasarkan Hari')
-    st.pyplot(fig)
-
-st.subheader('Penyewaan Sepeda Berdasarkan Hari dalam Seminggu')
-plot_rentals_by_weekday(filtered_df)
-
-# Penyewaan berdasarkan jam (data hourly)
-def plot_rentals_by_hour(df):
-    fig, ax = plt.subplots(figsize=(10, 5))
-    sns.lineplot(x='hr', y='cnt', data=df, ci=None, marker='o', color='red', ax=ax)
-    ax.set_xlabel('Jam')
-    ax.set_ylabel('Jumlah Penyewaan')
-    ax.set_title('Tren Penyewaan Sepeda Berdasarkan Jam')
-    st.pyplot(fig)
-
-st.subheader('Penyewaan Sepeda Berdasarkan Jam')
-plot_rentals_by_hour(hour_df)
 
 # Insight
 st.subheader('📌 Insight')
