@@ -3,12 +3,15 @@
 ## Setup Environment - Vscode
 ```
 install vscode
-pip install seaborn
-pip install streamlit
-pip install babel
-pip install matplotlib
-pip install numpy
-pip install pandas
+make new file dashboard.py
+click new terminal and install
+1. pip install seaborn
+2. pip install streamlit
+3. pip install babel
+4. pip install matplotlib
+5. pip install numpy
+6. pip install pandas
+then fill the file with the code
 ```
 
 ## Run streamlit app
